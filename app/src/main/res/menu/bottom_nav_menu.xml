@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/watchListFragment"
+        android:title="@string/watchlist"
+        android:icon="@drawable/ic_star_outline_24" />
+    <item android:id="@+id/streamFragment"
+        android:title="@string/stream"
+        android:icon="@drawable/ic_view_stream_24" />
+    <item android:id="@+id/searchFragment"
+        android:title="@string/search"
+        android:icon="@drawable/ic_search_24" />
+    <item android:id="@+id/chatFragment"
+        android:title="@string/chat"
+        android:icon="@drawable/ic_chat_bubble_outline_24" />
+    <item android:id="@+id/portfolioFragment"
+        android:title="@string/portfolio"
+        android:icon="@drawable/ic_history_toggle_off_24" />
+</menu>

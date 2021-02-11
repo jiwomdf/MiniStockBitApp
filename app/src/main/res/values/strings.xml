@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">MiniStockbitApp</string>
+
+
+    <!--Bottom Sheet Message-->
+    <string name="text_error_title">Error Occurred</string>
+    <string name="text_error_dsc">Sorry.. there is an error, please try again</string>
+
+    <!-- Button -->
+    <string name="oke">Oke</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+
+    <string-array name="watch_list_option">
+        <item>All Watchlist</item>
+        <item>First Watchlist</item>
+        <item>Second Watchlist</item>
+        <item>Third Watchlist</item>
+    </string-array>
+
+    <!-- Message -->
+    <string name="error_unknown_host_connection_dsc">Please check your Internet connection and try again </string>
+    <string name="error_403_dsc">Api rate limit exceeded, please wait for a minute to try another request</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="masuk_dengan_google">Masuk Dengan Google</string>
+    <string name="masuk_dengan_facebook">Masuk Dengan Facebook</string>
+    <string name="masuk_dengan_finger_print">Masuk Dengan Finger Print</string>
+    <string name="username_or_email">Username or email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="lupa_password">Lupa Password</string>
+    <string name="atau">Atau</string>
+    <string name="watchlist">Watchlist</string>
+    <string name="stream">Stream</string>
+    <string name="search">Search</string>
+    <string name="chat">Chat</string>
+    <string name="portfolio">Portfolio</string>
+    <string name="daftar_sekarang">Daftar Sekarang</string>
+    <string name="belum_punya_akun">Belum punya akun?</string>
+    <string name="masuk">Masuk</string>
+    <string name="add_symbol">Add Symbol</string>
+    <string name="stockbit">Stockbit</string>
+    <string name="error_message">Error message</string>
+    <string name="data_not_found">Data not found</string>
+
+
+</resources>
