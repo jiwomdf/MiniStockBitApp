@@ -46,6 +46,7 @@ class WatchListFragment : BaseFragment<FragmentWatchListBinding>(
     override fun onResume() {
         super.onResume()
         binding.shimmerFrameLayout.startShimmerAnimation()
+        cryptoCompareWebSocket = CryptoCompareWebSocket(arrayListOf("5~CCCAGG~BTC~USD"))
         startWebSocket()
     }
 
@@ -68,7 +69,6 @@ class WatchListFragment : BaseFragment<FragmentWatchListBinding>(
         setupSpinner()
         setObserver()
         viewModel.searchCryptoCompare()
-        cryptoCompareWebSocket.getStatusUpdate()
     }
 
     override fun setListener() {

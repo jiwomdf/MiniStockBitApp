@@ -24,7 +24,7 @@ class WatchListViewModel(private val repository: Repository): ViewModel() {
         this.data.value = value
     }
 
-    fun getSearchResult(): LiveData<PagingData<Data>> {
+    private fun getSearchResult(): LiveData<PagingData<Data>> {
         return Pager(
             config = PagingConfig(
                 pageSize = Constant.CRYPTO_API_PER_PAGE,
