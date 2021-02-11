@@ -1,10 +1,7 @@
 package com.katilijiwo.ministockbitapp.ui.watchlist
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.paging.CombinedLoadStates
@@ -12,11 +9,8 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.gson.Gson
 import com.katilijiwo.ministockbitapp.R
 import com.katilijiwo.ministockbitapp.base.BaseFragment
-import com.katilijiwo.ministockbitapp.data.remote.json.websocketrequest.WebSocketRequest
-import com.katilijiwo.ministockbitapp.data.remote.json.websocketresponse.WebSocketResponse
 import com.katilijiwo.ministockbitapp.data.remote.websocket.CryptoCompareWebSocket
 import com.katilijiwo.ministockbitapp.data.remote.websocket.CryptoCompareWebSocket.Companion.NORMAL_CLOSURE_STATUS
 import com.katilijiwo.ministockbitapp.databinding.FragmentWatchListBinding
@@ -24,9 +18,9 @@ import com.katilijiwo.ministockbitapp.ui.MainActivity
 import com.katilijiwo.ministockbitapp.ui.watchlist.adapter.WatchListLoadStateAdapter
 import com.katilijiwo.ministockbitapp.ui.watchlist.adapter.WatchListPageAdapter
 import com.katilijiwo.ministockbitapp.ui.watchlist.adapter.WatchListSpinnerAdapter
-import com.katilijiwo.ministockbitapp.util.Constant.SELECTED_PAGE
-import okhttp3.*
-import okio.ByteString
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.WebSocket
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
