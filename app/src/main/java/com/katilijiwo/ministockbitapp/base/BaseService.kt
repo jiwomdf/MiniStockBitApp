@@ -42,7 +42,6 @@ abstract class BaseService {
                     e.message?.let {
                         Log.d("<RES>", it)
                     }
-
                 when(e){
                     is SocketTimeoutException -> {
                         throw SocketTimeoutException("Connection Timed Out")
@@ -53,7 +52,6 @@ abstract class BaseService {
                     else -> {
                         throw Exception("Some Error Occurred")
                     }
-
                 }
             }
         }

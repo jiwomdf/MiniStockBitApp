@@ -43,10 +43,7 @@ abstract class BaseFragment<DB: ViewDataBinding>(
             .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val currentFocusedView = activity.currentFocus
         if (currentFocusedView != null) {
-            inputManager.hideSoftInputFromWindow(
-                currentFocusedView.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
+            inputManager.hideSoftInputFromWindow(currentFocusedView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
         }
     }
 
