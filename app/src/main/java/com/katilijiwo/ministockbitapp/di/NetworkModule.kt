@@ -4,6 +4,8 @@ import com.katilijiwo.ministockbitapp.BuildConfig
 import com.katilijiwo.ministockbitapp.data.remote.Api
 import com.katilijiwo.ministockbitapp.data.remote.CryptoCompareService
 import com.katilijiwo.ministockbitapp.data.remote.CryptoCompareServiceImpl
+import com.katilijiwo.ministockbitapp.util.Constant.LIMIT
+import com.katilijiwo.ministockbitapp.util.Constant.TSYM
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -49,8 +51,8 @@ fun headerInterceptor() : Interceptor =
     Interceptor { chain ->
         val request = chain.request()
         val newUrl = request.url().newBuilder()
-            .addQueryParameter("limit", "50")
-            .addQueryParameter("tsym", "USD")
+            .addQueryParameter("limit", LIMIT)
+            .addQueryParameter("tsym", TSYM)
             .build()
 
         val newRequest = request.newBuilder()

@@ -71,8 +71,8 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `login with correct input, validateLogin function return false`() =
-        coroutinesTestRule.testDispatcher.runBlockingTest {
+    fun `login with correct input, validateLogin function return false and navigate to WatchListFragment`()
+    = coroutinesTestRule.testDispatcher.runBlockingTest {
         viewModel.setUserName("test")
         viewModel.setUserPassword("test")
         assertSame(viewModel.validateLogin(), true)

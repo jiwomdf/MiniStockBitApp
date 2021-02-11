@@ -7,7 +7,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.katilijiwo.ministockbitapp.data.remote.json.cryptocompare.Data
-import com.katilijiwo.ministockbitapp.data.remote.websocket.CryptoCompareWebSocket
 import com.katilijiwo.ministockbitapp.databinding.ListWatchListDataBinding
 
 class WatchListPageAdapter: PagingDataAdapter<Data, WatchListPageAdapter.WatchListViewHolder>(
@@ -24,7 +23,11 @@ class WatchListPageAdapter: PagingDataAdapter<Data, WatchListPageAdapter.WatchLi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WatchListViewHolder {
-        val binding = ListWatchListDataBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ListWatchListDataBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return WatchListViewHolder(binding)
     }
 
@@ -35,7 +38,9 @@ class WatchListPageAdapter: PagingDataAdapter<Data, WatchListPageAdapter.WatchLi
         }
     }
 
-    inner class WatchListViewHolder(private val binding: ListWatchListDataBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class WatchListViewHolder(private val binding: ListWatchListDataBinding) : RecyclerView.ViewHolder(
+        binding.root
+    ){
         fun bind(data: Data){
             try {
                 if(data.coinInfo != null && data.dISPLAY != null && data.dISPLAY.uSD != null){

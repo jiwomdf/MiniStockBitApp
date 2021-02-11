@@ -3,7 +3,10 @@
     <item android:id="@+id/watchListFragment"
         android:title="@string/watchlist"
         android:icon="@drawable/ic_star_outline_24" />
-    <item android:id="@+id/streamFragment"
+    <item android:id="@+id/portfolioFragment"
         android:title="@string/stream"
-        android:icon="@drawable/ic_view_stream_24" />
+        android:icon="@drawable/ic_history_toggle_off_24" />
+    <item android:id="@+id/alertFragment"
+        android:title="@string/alert"
+        android:icon="@drawable/ic_watch_24" />
 </menu>

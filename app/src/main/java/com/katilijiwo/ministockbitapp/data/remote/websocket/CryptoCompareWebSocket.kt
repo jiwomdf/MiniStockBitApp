@@ -17,9 +17,12 @@ class CryptoCompareWebSocket(
         const val NORMAL_CLOSURE_STATUS = 1000
     }
 
+    private val ACTION = "SubAdd"
+    private val TAG = "WebSocket"
+
     override fun onOpen(webSocket: WebSocket, response: Response) {
         val obj = WebSocketRequest(
-            action = "SubAdd",
+            action = ACTION,
             subs = array
         )
         val gson = Gson()
@@ -29,27 +32,27 @@ class CryptoCompareWebSocket(
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         super.onMessage(webSocket, text)
-        Log.d("WebSocket", "Reciving : $text")
+        Log.d(TAG, "Reciving : $text")
 
         val gson = Gson()
         val results: WebSocketResponse = gson.fromJson(text, WebSocketResponse::class.java)
 
-        Log.d("WebSocket", results.toString())
+        Log.d(TAG, results.toString())
     }
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
         super.onMessage(webSocket, bytes)
-        Log.d("WebSocket", "Reciving : ${bytes.hex()}")
+        Log.d(TAG, "Reciving : ${bytes.hex()}")
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
         super.onClosing(webSocket, code, reason)
         webSocket.close(NORMAL_CLOSURE_STATUS, "Goodbye!")
-        Log.d("WebSocket", "Closing : $code $reason")
+        Log.d(TAG, "Closing : $code $reason")
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
         super.onFailure(webSocket, t, response)
-        Log.d("WebSocket", "Error: " + t.message)
+        Log.d(TAG, "Error: " + t.message)
     }
 }

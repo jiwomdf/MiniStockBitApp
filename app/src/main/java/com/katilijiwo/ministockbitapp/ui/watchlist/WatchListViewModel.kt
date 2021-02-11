@@ -7,21 +7,19 @@ import com.katilijiwo.ministockbitapp.data.remote.json.cryptocompare.Data
 import com.katilijiwo.ministockbitapp.data.remote.paged.WatchListPagingSource
 import com.katilijiwo.ministockbitapp.util.AbsentLiveData
 import com.katilijiwo.ministockbitapp.util.Constant
-import com.katilijiwo.ministockbitapp.util.CryptoEvent
-import kotlinx.coroutines.launch
 
 class WatchListViewModel(private val repository: Repository): ViewModel() {
 
-    private val data = MutableLiveData<Int>()
+    private val data = MutableLiveData<Boolean>()
     val datas = Transformations.switchMap(data){ value ->
         if(value == null){
             AbsentLiveData.create()
         } else {
-            getSearchResult().cachedIn(viewModelScope)
+            getSearchResult()
         }
     }
-    fun searchCryptoCompare(value: Int = 0){
-        this.data.value = value
+    fun searchCryptoCompare(refresh: Boolean = true){
+        this.data.value = refresh
     }
 
     private fun getSearchResult(): LiveData<PagingData<Data>> {

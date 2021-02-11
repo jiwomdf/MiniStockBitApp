@@ -17,7 +17,7 @@ import com.katilijiwo.ministockbitapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(){
 
-    private lateinit var binding : ActivityMainBinding
+    lateinit var binding : ActivityMainBinding
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +28,11 @@ class MainActivity : AppCompatActivity(){
         setContentView(binding.root)
         navController = (supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment).navController
         setupBottomNavigationView()
+        setupNavView()
+    }
+
+    private fun setupNavView() {
+        binding.navView.setupWithNavController(navController)
     }
 
     private fun setupBottomNavigationView(){
@@ -36,9 +41,10 @@ class MainActivity : AppCompatActivity(){
             when(destination.id){
                 R.id.loginFragment -> {
                     binding.bottomNavigationView.visibility = View.GONE
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 }
                 else -> {
-                    binding.bottomNavigationView.visibility = View.VISIBLE
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
                 }
             }
         }
@@ -48,6 +54,10 @@ class MainActivity : AppCompatActivity(){
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         return super.dispatchTouchEvent(ev)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
 

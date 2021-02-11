@@ -20,6 +20,7 @@ import com.katilijiwo.ministockbitapp.data.remote.json.websocketresponse.WebSock
 import com.katilijiwo.ministockbitapp.data.remote.websocket.CryptoCompareWebSocket
 import com.katilijiwo.ministockbitapp.data.remote.websocket.CryptoCompareWebSocket.Companion.NORMAL_CLOSURE_STATUS
 import com.katilijiwo.ministockbitapp.databinding.FragmentWatchListBinding
+import com.katilijiwo.ministockbitapp.ui.MainActivity
 import com.katilijiwo.ministockbitapp.ui.watchlist.adapter.WatchListLoadStateAdapter
 import com.katilijiwo.ministockbitapp.ui.watchlist.adapter.WatchListPageAdapter
 import com.katilijiwo.ministockbitapp.ui.watchlist.adapter.WatchListSpinnerAdapter
@@ -34,20 +35,23 @@ class WatchListFragment : BaseFragment<FragmentWatchListBinding>(
     R.layout.fragment_watch_list
 ), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    lateinit var watchListPageAdapter: WatchListPageAdapter
     private val viewModel: WatchListViewModel by viewModel()
     private val webSocketClient: Request by inject()
+    private val subs = arrayListOf("5~CCCAGG~BTC~USD")
     private var isFromRefresh = false
-
+    lateinit var watchListPageAdapter: WatchListPageAdapter
     lateinit var client: OkHttpClient
     lateinit var webSocket: WebSocket
-    lateinit var cryptoCompareWebSocket: CryptoCompareWebSocket
 
     override fun onResume() {
         super.onResume()
         binding.shimmerFrameLayout.startShimmerAnimation()
-        cryptoCompareWebSocket = CryptoCompareWebSocket(arrayListOf("5~CCCAGG~BTC~USD"))
         startWebSocket()
+    }
+
+    private fun startWebSocket(){
+        client = OkHttpClient()
+        webSocket = client.newWebSocket(webSocketClient, CryptoCompareWebSocket(subs))
     }
 
     override fun onPause() {
@@ -57,18 +61,18 @@ class WatchListFragment : BaseFragment<FragmentWatchListBinding>(
         super.onPause()
     }
 
-    private fun startWebSocket(){
-        client = OkHttpClient()
-        webSocket = client.newWebSocket(webSocketClient, cryptoCompareWebSocket)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
         setupSpinner()
         setObserver()
+        setUpNavigationView()
         viewModel.searchCryptoCompare()
+    }
+
+    private fun setUpNavigationView() {
+        (activity as MainActivity).binding.bottomNavigationView.visibility = View.VISIBLE
     }
 
     override fun setListener() {
@@ -81,14 +85,11 @@ class WatchListFragment : BaseFragment<FragmentWatchListBinding>(
         viewModel.datas.observe(viewLifecycleOwner, {
             watchListPageAdapter.submitData(lifecycle, it)
         })
-
         watchListPageAdapter.addLoadStateListener { combinedLoadStates  ->
             if(combinedLoadStates.source.refresh is LoadState.NotLoading &&
                 combinedLoadStates.append.endOfPaginationReached &&
                 watchListPageAdapter.itemCount < 1){
                 setComponentVisibility(DATA_NOT_FOUND)
-            } else {
-                setComponentVisibility(DATA_FOUND)
             }
 
             when(combinedLoadStates.source.refresh){
@@ -98,6 +99,11 @@ class WatchListFragment : BaseFragment<FragmentWatchListBinding>(
                 is LoadState.NotLoading -> {
                     setShimmerEffectVisibility(false)
                     binding.srlWatchList.isRefreshing = false
+                    if(combinedLoadStates.source.refresh !is LoadState.Error){
+                        setComponentVisibility(DATA_FOUND)
+                    } else {
+                        setComponentVisibility(DATA_NOT_FOUND)
+                    }
                 }
                 is LoadState.Error -> {
                     setShimmerEffectVisibility(false)
@@ -137,7 +143,6 @@ class WatchListFragment : BaseFragment<FragmentWatchListBinding>(
                 binding.tvErrorMessage.visibility = View.VISIBLE
             }
         }
-
         binding.shimmerFrameLayout.stopShimmerAnimation()
         binding.shimmerFrameLayout.visibility = View.GONE
     }
@@ -157,51 +162,36 @@ class WatchListFragment : BaseFragment<FragmentWatchListBinding>(
     private fun setupRecyclerView(){
         watchListPageAdapter = WatchListPageAdapter()
         binding.rvWatchList.apply {
-            adapter = watchListPageAdapter.withLoadStateFooter(
-                footer = WatchListLoadStateAdapter({ watchListPageAdapter.retry() }, { loadState ->
-                    showScrollError(
-                        loadState
-                    )
-                })
+            adapter = watchListPageAdapter.withLoadStateHeaderAndFooter(
+                header = WatchListLoadStateAdapter({watchListPageAdapter.retry()},{loadState -> showScrollError(loadState)}),
+                footer = WatchListLoadStateAdapter({watchListPageAdapter.retry()},{loadState -> showScrollError(loadState)})
             )
-            layoutManager = LinearLayoutManager(
-                requireContext(),
-                LinearLayoutManager.VERTICAL,
-                false
-            )
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
     }
 
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.iv_menu -> {
-                binding.drawerLayout.openDrawer(GravityCompat.START)
+                (activity as MainActivity).binding.drawerLayout.openDrawer(GravityCompat.START)
             }
         }
     }
 
     private fun showScrollError(loadState: LoadState) {
         try {
-            Toast.makeText(
-                requireContext(),
-                (loadState as LoadState.Error).error.message,
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(requireContext(), (loadState as LoadState.Error).error.message, Toast.LENGTH_SHORT).show()
         }
         catch (ex: Exception){
-            Toast.makeText(
-                requireContext(),
-                resources.getString(R.string.text_error_title),
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(requireContext(), resources.getString(R.string.text_error_title), Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onRefresh() {
-        watchListPageAdapter.submitData(lifecycle, PagingData.empty())
-        binding.rvWatchList.visibility = View.GONE
-        viewModel.searchCryptoCompare()
         isFromRefresh = true
+        watchListPageAdapter.submitData(lifecycle, PagingData.empty())
+        watchListPageAdapter.notifyDataSetChanged()
+        viewModel.searchCryptoCompare()
     }
 
 }
